@@ -21,21 +21,18 @@
                 $bancos["'".$fila['id']."'"] = $fila['nombre'];
             }
             
-            echo crearSelect($bancos, 'Bancos');
 
             $formularioAbrirCuentaAhorros = "";
             $formularioAbrirCuentaAhorros .= '<form action="abrir_cuenta_ahorros.php" method="post">';
+            $formularioAbrirCuentaAhorros .= crearSelect($bancos, 'bancos');
 
-            
-
-
-            $camposFormularioAbrirCuentaAhorros = array(
-                
-
+            $formulario = array(
+                'Crear cuenta de ahorros' => 'submit'
             );
 
-
-            $formularioAbrirCuentaAhorros .= '</form>'
+            $formularioAbrirCuentaAhorros .= crearFormulario($formulario);
+            $formularioAbrirCuentaAhorros .= '</form>';
+            echo $formularioAbrirCuentaAhorros;
 
         ?>
     </body>
