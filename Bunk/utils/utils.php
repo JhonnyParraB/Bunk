@@ -20,10 +20,10 @@
         $linea="";
         foreach($myArray as $key => $tipo){
             if ($tipo === 'submit')
-			    $linea .= "<div><input type='$tipo' name='$key' value='$key' ></div>";
+			    $linea .= "<div><input type=$tipo name=$key value=$key ></div>";
 		    else{
-                $linea.="<label for='$key'><b>$key:</b></label>";
-                $linea.="<input type='$tipo' name='$key' ";
+                $linea.="<label for=$key><b>$key:</b></label>";
+                $linea.="<input type=$tipo name=$key ";
                 if(isset($_POST["$key"])) 
                     $linea.= "value=".$_POST["$key"];
                 $linea.=">";
