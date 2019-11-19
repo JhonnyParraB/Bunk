@@ -79,18 +79,11 @@
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION);
             CREATE TABLE IF NOT EXISTS ADMINISTRADORES (
-                id INT NOT NULL AUTO_INCREMENT,
-                usuario VARCHAR(100) NOT NULL,
-                contrasena VARCHAR(100) NOT NULL,
-                banco_id INT NOT NULL,
-                PRIMARY KEY (id),
-                INDEX fk_ADMINISTRADORES_BANCOS1_idx (banco_id ASC),
-                UNIQUE INDEX usuario_UNIQUE (usuario ASC),
-                CONSTRAINT fk_ADMINISTRADORES_BANCOS1
-                    FOREIGN KEY (banco_id)
-                    REFERENCES BANCOS (id)
-                    ON DELETE NO ACTION
-                    ON UPDATE NO ACTION);
+                `id` INT NOT NULL AUTO_INCREMENT,
+                `usuario` VARCHAR(100) NOT NULL,
+                `contrasena` VARCHAR(100) NOT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE INDEX `usuario_UNIQUE` (`usuario` ASC) );
             CREATE TABLE IF NOT EXISTS CUENTAS_AHORRO (
                 id INT NOT NULL AUTO_INCREMENT,
                 saldo DECIMAL(12,2) NOT NULL DEFAULT 0.00,
