@@ -10,7 +10,7 @@
         }
         return true;
     }
-    function validarMail($data){
+    function validarEmail($data){
         if (!filter_var($data, FILTER_VALIDATE_EMAIL)) {
             return false;
         }
@@ -23,15 +23,24 @@
 			    $linea .= "<div><input type='$tipo' name='$key' value='$key' ></div>";
 		    else{
                 $linea.="<label for='$key'><b>$key:</b></label><br>";
-                $linea.="<input type='$tipo' name='$key' ";
+                if($tipo === 'javecoin'){
+                    $linea.="<input type=number name='$key' ";
+                }else{
+                    $linea.="<input type='$tipo' name='$key' ";
+                }
                 if(isset($_POST["$key"])) 
                     $linea.= "value=".$_POST["$key"];
-                $linea.="><br>";
+                if($tipo === 'javecoin'){
+                    $linea.=">JaveCoins<br>";
+                }else{
+                    $linea.="><br>";
+                }  
             }
         }
         $linea.='</div>';
         return $linea;
     }
+    //label, name, type, value
     function crearFormulario2($datos){
         $linea = '<div>';
         for($row = 0; $row < count($datos); ++$row){
@@ -39,9 +48,40 @@
 			    $linea .= "<div><input type='".$datos[$row][2]."' name='".$datos[$row][1]."' value='".$datos[$row][0]."' ></div>";
 		    else{
                 $linea.="<label for='".$datos[$row][1]."'><b>".$datos[$row][0].":</b></label><br>";
-                $linea.="<input type='".$datos[$row][2]."' name='".$datos[$row][1]."' ";
+                if($datos[$row][2] === 'javecoin'){
+                    $linea.="<input type='number' name='".$datos[$row][1]."' ";
+                }else{
+                    $linea.="<input type='".$datos[$row][2]."' name='".$datos[$row][1]."' ";
+                }
                 $linea.= "value=".$datos[$row][3];
-                $linea.="><br>";
+                if($datos[$row][2] === 'javecoin'){
+                    $linea.=">JaveCoins<br>";
+                }else{
+                    $linea.="><br>";
+                }
+            }
+        }
+        $linea.='</div>';
+        return $linea;
+    }
+    function crearFormulario3($myArray, $datos){
+        $linea = '<div>';
+        foreach($myArray as $key => $tipo){
+            if ($tipo === 'submit')
+			    $linea .= "<div><input type='$tipo' name='$key' value='$key' ></div>";
+		    else{
+                $linea.="<label for='$key'><b>$key:</b></label><br>";
+                if($tipo === 'javecoin'){
+                    $linea.="<input type=number name='$key' ";
+                }else{
+                    $linea.="<input type='$tipo' name='$key' ";
+                }
+                $linea.= "value=".$datos["$key"];
+                if($tipo === 'javecoin'){
+                    $linea.=">JaveCoins<br>";
+                }else{
+                    $linea.="><br>";
+                } 
             }
         }
         $linea.='</div>';
