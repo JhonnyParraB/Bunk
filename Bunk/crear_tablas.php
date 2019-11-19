@@ -156,6 +156,7 @@
             ";
     if(mysqli_multi_query($con,$sql)){
         echo "Tablas creadas<br>";
+        header("Location: llenar_festivos.php");
     }else{
         echo "Error en la creación: ".mysqli_error($con)."<br>";
     }
