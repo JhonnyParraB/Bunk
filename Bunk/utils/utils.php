@@ -31,7 +31,7 @@
                 if(isset($_POST["$key"])) 
                     $linea.= "value=".$_POST["$key"];
                 if($tipo === 'javecoin'){
-                    $linea.=">JaveCoins<br>";
+                    $linea.="> JaveCoins<br>";
                 }else{
                     $linea.="><br>";
                 }  
@@ -55,7 +55,7 @@
                 }
                 $linea.= "value=".$datos[$row][3];
                 if($datos[$row][2] === 'javecoin'){
-                    $linea.=">JaveCoins<br>";
+                    $linea.="> JaveCoins<br>";
                 }else{
                     $linea.="><br>";
                 }
@@ -78,7 +78,7 @@
                 }
                 $linea.= "value=".$datos["$key"];
                 if($tipo === 'javecoin'){
-                    $linea.=">JaveCoins<br>";
+                    $linea.="> JaveCoins<br>";
                 }else{
                     $linea.="><br>";
                 } 
