@@ -31,12 +31,14 @@
         }
         return $linea;
     }
-    //Esta función crea un select con las opciones de un arreglo y el nombre
+    //Esta función crea un select con los valores y opciones de un arreglo
     function crearSelect($opciones, $nombreSelect){
         $select = "";
         $select .= "<select name=$nombreSelect>";
-        foreach($opciones as $opcion){
-            $select .= "<option value='$opcion'>$opcion</option>";
+        foreach($opciones as $value => $text){
+            $select .= "<option value=$value>$text</option>";
         }
+        $select .="</select>";
+        return $select;
     }
 ?>
