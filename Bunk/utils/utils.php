@@ -32,15 +32,15 @@
         $linea.='</div>';
         return $linea;
     }
-    function crearFormulario2($myArray, $datos){
+    function crearFormulario2($datos){
         $linea = '<div>';
-        foreach($myArray as $key => $tipo){
-            if ($tipo === 'submit')
-			    $linea .= "<div><input type='$tipo' name='$key' value='$key' ></div>";
+        for($row = 0; $row < count($datos); ++$row){
+            if ($datos[$row][2] === 'submit')
+			    $linea .= "<div><input type='".$datos[$row][2]."' name='".$datos[$row][1]."' value='".$datos[$row][0]."' ></div>";
 		    else{
-                $linea.="<label for='$key'><b>$key:</b></label><br>";
-                $linea.="<input type='$tipo' name='$key' ";
-                $linea.= "value=".$datos["$key"];
+                $linea.="<label for='".$datos[$row][1]."'><b>".$datos[$row][0].":</b></label><br>";
+                $linea.="<input type='".$datos[$row][2]."' name='".$datos[$row][1]."' ";
+                $linea.= "value=".$datos[$row][3];
                 $linea.="><br>";
             }
         }
