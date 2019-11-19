@@ -32,6 +32,21 @@
         $linea.='</div>';
         return $linea;
     }
+    function crearFormulario2($myArray, $datos){
+        $linea = '<div>';
+        foreach($myArray as $key => $tipo){
+            if ($tipo === 'submit')
+			    $linea .= "<div><input type='$tipo' name='$key' value='$key' ></div>";
+		    else{
+                $linea.="<label for='$key'><b>$key:</b></label><br>";
+                $linea.="<input type='$tipo' name='$key' ";
+                $linea.= "value=".$datos["$key"];
+                $linea.="><br>";
+            }
+        }
+        $linea.='</div>';
+        return $linea;
+    }
     //Esta función crea un select con los valores y opciones de un arreglo
     function crearSelect($opciones, $nombreSelect){
         $select = "";
