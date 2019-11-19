@@ -20,7 +20,7 @@
         $linea = '<div>';
         foreach($myArray as $key => $tipo){
             if ($tipo === 'submit')
-			    $linea .= "<div><input type='$tipo' name='$key' value='$key' ></div>";
+			    $linea .= "<div><input type=$tipo name=$key value=$key ></div>";
 		    else{
                 $linea.="<label for='$key'><b>$key:</b></label><br>";
                 $linea.="<input type='$tipo' name='$key' ";
