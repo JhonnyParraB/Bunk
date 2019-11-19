@@ -12,7 +12,8 @@
         echo "Error en la conexión: ".mysqli_conecct_error()."<br>";
     }
     $sql = "
-            
+
+
             CREATE TABLE IF NOT EXISTS `Bunk`.`BANCOS` (
                 `id` INT NOT NULL AUTO_INCREMENT,
                 `nombre` VARCHAR(100) NOT NULL,
@@ -49,45 +50,38 @@
             
             
             
-            CREATE TABLE IF NOT EXISTS `Bunk`.`CREDITOS` (
-                `id` INT NOT NULL AUTO_INCREMENT,
-                `tasa_interes` DECIMAL(4,2) NOT NULL,
-                `fecha_pago` DATE NOT NULL,
-                `valor` DECIMAL(12,2) NOT NULL,
-                `dias_mora` INT NOT NULL DEFAULT 0,
-                `aprobado` BIT NOT NULL DEFAULT 0,
-                `pagado` BIT NOT NULL DEFAULT 0,
-                `cliente_id` INT NULL,
-                `visitante_id` INT NULL,
-                `banco_id` INT NOT NULL,
-                `fecha_aprobacion` DATETIME NULL,
-                `fecha_solicitud` DATETIME NULL,
-                `BANCOS_id` INT NOT NULL,
-                PRIMARY KEY (`id`),
-                INDEX `fk_CREDITOS_VISITANTES1_idx` (`cliente_id` ASC)  ,
-                INDEX `fk_CREDITOS_CLIENTES1_idx` (`visitante_id` ASC)  ,
-                INDEX `fk_CREDITOS_BANCOS1_idx` (`banco_id` ASC)  ,
-                INDEX `fk_CREDITOS_BANCOS2_idx` (`BANCOS_id` ASC)  ,
-                CONSTRAINT `fk_CREDITOS_VISITANTES1`
-                FOREIGN KEY (`cliente_id`)
-                REFERENCES `Bunk`.`VISITANTES` (`id`)
-                ON DELETE NO ACTION
-                ON UPDATE NO ACTION,
-                CONSTRAINT `fk_CREDITOS_CLIENTES1`
-                FOREIGN KEY (`visitante_id`)
-                REFERENCES `Bunk`.`CLIENTES` (`id`)
-                ON DELETE NO ACTION
-                ON UPDATE NO ACTION,
-                CONSTRAINT `fk_CREDITOS_BANCOS1`
-                FOREIGN KEY (`banco_id`)
-                REFERENCES `Bunk`.`BANCOS` (`id`)
-                ON DELETE NO ACTION
-                ON UPDATE NO ACTION,
-                CONSTRAINT `fk_CREDITOS_BANCOS2`
-                FOREIGN KEY (`BANCOS_id`)
-                REFERENCES `Bunk`.`BANCOS` (`id`)
-                ON DELETE NO ACTION
-                ON UPDATE NO ACTION);
+                CREATE TABLE IF NOT EXISTS `Bunk`.`CREDITOS` (
+                    `id` INT NOT NULL AUTO_INCREMENT,
+                    `tasa_interes` DECIMAL(4,2) NOT NULL,
+                    `fecha_pago` DATE NOT NULL,
+                    `valor` DECIMAL(12,2) NOT NULL,
+                    `dias_mora` INT NOT NULL DEFAULT 0,
+                    `aprobado` BIT NOT NULL DEFAULT 0,
+                    `pagado` BIT NOT NULL DEFAULT 0,
+                    `cliente_id` INT NULL,
+                    `visitante_id` INT NULL,
+                    `fecha_aprobacion` DATETIME NULL,
+                    `fecha_solicitud` DATETIME NULL,
+                    `banco_id` INT NOT NULL,
+                    PRIMARY KEY (`id`),
+                    INDEX `fk_CREDITOS_VISITANTES1_idx` (`cliente_id` ASC) ,
+                    INDEX `fk_CREDITOS_CLIENTES1_idx` (`visitante_id` ASC) ,
+                    INDEX `fk_CREDITOS_BANCOS2_idx` (`banco_id` ASC) ,
+                    CONSTRAINT `fk_CREDITOS_VISITANTES1`
+                      FOREIGN KEY (`cliente_id`)
+                      REFERENCES `Bunk`.`VISITANTES` (`id`)
+                      ON DELETE NO ACTION
+                      ON UPDATE NO ACTION,
+                    CONSTRAINT `fk_CREDITOS_CLIENTES1`
+                      FOREIGN KEY (`visitante_id`)
+                      REFERENCES `Bunk`.`CLIENTES` (`id`)
+                      ON DELETE NO ACTION
+                      ON UPDATE NO ACTION,
+                    CONSTRAINT `fk_CREDITOS_BANCOS2`
+                      FOREIGN KEY (`banco_id`)
+                      REFERENCES `Bunk`.`BANCOS` (`id`)
+                      ON DELETE NO ACTION
+                      ON UPDATE NO ACTION);
             
             
             
@@ -107,17 +101,17 @@
                 `saldo` DECIMAL(12,2) NOT NULL DEFAULT 0.00,
                 `cliente_id` INT NOT NULL,
                 `cuota_manejo` DECIMAL(12,2) NULL,
-                `id_banco` INT NOT NULL,
+                `banco_id` INT NOT NULL,
                 PRIMARY KEY (`id`),
                 INDEX `fk_CUENTAS_AHORRO_CLIENTES1_idx` (`cliente_id` ASC)  ,
-                INDEX `fk_CUENTAS_AHORRO_BANCOS1_idx` (`id_banco` ASC)  ,
+                INDEX `fk_CUENTAS_AHORRO_BANCOS1_idx` (`banco_id` ASC)  ,
                 CONSTRAINT `fk_CUENTAS_AHORRO_CLIENTES1`
                 FOREIGN KEY (`cliente_id`)
                 REFERENCES `Bunk`.`CLIENTES` (`id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION,
                 CONSTRAINT `fk_CUENTAS_AHORRO_BANCOS1`
-                FOREIGN KEY (`id_banco`)
+                FOREIGN KEY (`banco_id`)
                 REFERENCES `Bunk`.`BANCOS` (`id`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION);

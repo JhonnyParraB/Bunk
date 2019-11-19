@@ -24,7 +24,8 @@
 
             $formularioAbrirCuentaAhorros = "";
             $formularioAbrirCuentaAhorros .= '<form action="abrir_cuenta_ahorros.php" method="post">';
-            $formularioAbrirCuentaAhorros .= crearSelect($bancos, 'bancos');
+            $formularioAbrirCuentaAhorros .= '<label for="banco">Banco: </label>';
+            $formularioAbrirCuentaAhorros .= crearSelect($bancos, 'banco');
 
             $formulario = array(
                 'Crear cuenta de ahorros' => 'submit'
@@ -35,8 +36,22 @@
             echo $formularioAbrirCuentaAhorros;
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                if (isset['bancos']){
-                    $sql = 'INSERT INTO CUENTAS_AHORRO (id, )'
+                if (isset($_POST['Crear cuenta de ahorros'])){
+                    $id_banco = $_POST['banco'];
+                    
+
+                    $sql = "SELECT * FROM BANCOS WHERE id=$id_banco";
+                    $resultado = mysqli_query($con , $sql);
+                    $row = mysqli_fetch_array($resultado);
+
+                    $cuota_manejo = $row['cuota_cuenta_ahorros'];
+                    $saldo_inial = 0;
+                    //ESTO SE DEBE EXTRAER DE LA SESIÓN:
+                    $cliente_id = 1;
+
+                     
+
+                    $sql = "INSERT INTO CUENTAS_AHORRO (saldo, cliente_id, cuota_manejo, id_banco) ";
                 }
             }
 
