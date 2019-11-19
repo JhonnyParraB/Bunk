@@ -28,7 +28,7 @@
             $formularioAbrirCuentaAhorros .= crearSelect($bancos, 'banco');
 
             $formulario = array(
-                'Crear cuenta de ahorros' => 'submit'
+                'Abrir' => 'submit'
             );
 
             $formularioAbrirCuentaAhorros .= crearFormulario($formulario);
@@ -36,22 +36,32 @@
             echo $formularioAbrirCuentaAhorros;
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
-                if (isset($_POST['Crear cuenta de ahorros'])){
-                    $id_banco = $_POST['banco'];
+                
+                if (isset($_POST['Abrir'])){
+                    $banco_id = $_POST['banco'];
                     
 
-                    $sql = "SELECT * FROM BANCOS WHERE id=$id_banco";
+                    $sql = "SELECT * FROM BANCOS WHERE id=$banco_id";
+                    
                     $resultado = mysqli_query($con , $sql);
                     $row = mysqli_fetch_array($resultado);
 
                     $cuota_manejo = $row['cuota_cuenta_ahorros'];
+                    $interes_cuenta_ahorros = $row['interes_cuenta_ahorros'];
+                    $nombre_banco = $row['nombre'];
                     $saldo_inial = 0;
                     //ESTO SE DEBE EXTRAER DE LA SESIÓN:
                     $cliente_id = 1;
 
                      
 
-                    $sql = "INSERT INTO CUENTAS_AHORRO (saldo, cliente_id, cuota_manejo, id_banco) ";
+                    $sql = "INSERT INTO CUENTAS_AHORRO (saldo, cliente_id, cuota_manejo, banco_id) VALUES ($saldo_inial, $cliente_id, $cuota_manejo, $banco_id)";
+                    if (mysqli_query($con, $sql)) {
+                        echo "Se ha abierto una cuenta de ahorros en el banco $nombre_banco, la cuota de manejo es $cuota_manejo JaveCoins y la tasa de interes es $interes_cuenta_ahorros%.</br>";
+                        echo "El saldo inicial de la cuenta es 0 JaveCoins";
+                    } else {
+                        echo 'Hubo un error al intentar abrir la cuenta de ahorros '.mysqli_error($con);
+                    }
                 }
             }
 
