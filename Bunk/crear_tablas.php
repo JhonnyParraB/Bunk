@@ -11,7 +11,17 @@
     if(mysqli_connect_errno()){
         echo "Error en la conexión: ".mysqli_conecct_error()."<br>";
     }
-    $sql = "CREATE TABLE IF NOT EXISTS BANCOS (
+    $sql = "DROP TABLE IF EXISTS DIAS_FESTIVOS ;
+            DROP TABLE IF EXISTS ADMINISTRADORES ;
+            DROP TABLE IF EXISTS TARJETAS_CREDITO ;
+            DROP TABLE IF EXISTS COMPRA ;
+            DROP TABLE IF EXISTS TRANSFERENCIAS ;
+            DROP TABLE IF EXISTS VISITANTES ;
+            DROP TABLE IF EXISTS CUENTAS_AHORRO ;
+            DROP TABLE IF EXISTS CREDITOS ;
+            DROP TABLE IF EXISTS CLIENTES ;
+            DROP TABLE IF EXISTS BANCOS ;
+            CREATE TABLE IF NOT EXISTS BANCOS (
                 id INT NOT NULL AUTO_INCREMENT,
                 nombre VARCHAR(100) NOT NULL,
                 interes_credito_visitantes INT NOT NULL,
@@ -48,6 +58,7 @@
                 visitante_id INT NULL,
                 banco_id INT NOT NULL,
                 fecha_aprobacion DATETIME NULL,
+                fecha_solicitud DATETIME NULL,
                 PRIMARY KEY (id),
                 INDEX fk_CREDITOS_VISITANTES1_idx (cliente_id ASC),
                 INDEX fk_CREDITOS_CLIENTES1_idx (visitante_id ASC),
@@ -101,6 +112,7 @@
                 sobrecupo DECIMAL(12,2) NULL,
                 cuenta_ahorro_id INT NOT NULL,
                 fecha_aprobacion DATETIME NULL,
+                fecha_solicitud DATETIME NULL,
                 PRIMARY KEY (id),
                 INDEX fk_TARJETAS_CREDITO_CUENTAS_AHORRO_idx (cuenta_ahorro_id ASC),
                 CONSTRAINT fk_TARJETAS_CREDITO_CUENTAS_AHORRO
