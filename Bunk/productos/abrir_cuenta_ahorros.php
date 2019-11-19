@@ -34,6 +34,12 @@
             $formularioAbrirCuentaAhorros .= '</form>';
             echo $formularioAbrirCuentaAhorros;
 
+            if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if (isset['bancos']){
+                    $sql = 'INSERT INTO CUENTAS_AHORRO (id, )'
+                }
+            }
+
         ?>
     </body>
 </html>
