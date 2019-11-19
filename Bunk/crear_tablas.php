@@ -11,16 +11,7 @@
     if(mysqli_connect_errno()){
         echo "Error en la conexión: ".mysqli_conecct_error()."<br>";
     }
-    $sql = "DROP TABLE IF EXISTS DIAS_FESTIVOS ;
-            DROP TABLE IF EXISTS ADMINISTRADORES ;
-            DROP TABLE IF EXISTS TARJETAS_CREDITO ;
-            DROP TABLE IF EXISTS COMPRA ;
-            DROP TABLE IF EXISTS TRANSFERENCIAS ;
-            DROP TABLE IF EXISTS VISITANTES ;
-            DROP TABLE IF EXISTS CUENTAS_AHORRO ;
-            DROP TABLE IF EXISTS CREDITOS ;
-            DROP TABLE IF EXISTS CLIENTES ;
-            DROP TABLE IF EXISTS BANCOS ;
+    $sql = "
             CREATE TABLE IF NOT EXISTS BANCOS (
                 id INT NOT NULL AUTO_INCREMENT,
                 nombre VARCHAR(100) NOT NULL,
@@ -157,7 +148,7 @@
             CREATE TABLE IF NOT EXISTS DIAS_FESTIVOS (
                 FECHA DATE NOT NULL COMMENT 'Solo hay que comparar los días y los meses (se toman solo las fechas especiales de 2019)',
                 PRIMARY KEY (FECHA),
-                UNIQUE INDEX FECHA_UNIQUE (FECHA ASC))
+                UNIQUE INDEX FECHA_UNIQUE (FECHA ASC));
             ";
     if(mysqli_multi_query($con,$sql)){
         echo "Tablas creadas<br>";
