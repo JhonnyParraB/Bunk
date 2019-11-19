@@ -47,6 +47,7 @@
                 cliente_id INT NULL,
                 visitante_id INT NULL,
                 banco_id INT NOT NULL,
+                fecha_aprobacion DATETIME NULL,
                 PRIMARY KEY (id),
                 INDEX fk_CREDITOS_VISITANTES1_idx (cliente_id ASC),
                 INDEX fk_CREDITOS_CLIENTES1_idx (visitante_id ASC),
@@ -99,6 +100,7 @@
                 tasa_interes INT NULL,
                 sobrecupo DECIMAL(12,2) NULL,
                 cuenta_ahorro_id INT NOT NULL,
+                fecha_aprobacion DATETIME NULL,
                 PRIMARY KEY (id),
                 INDEX fk_TARJETAS_CREDITO_CUENTAS_AHORRO_idx (cuenta_ahorro_id ASC),
                 CONSTRAINT fk_TARJETAS_CREDITO_CUENTAS_AHORRO
