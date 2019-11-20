@@ -114,7 +114,7 @@
                         $valor_credito = $row['valor'];
                         $tasa_interes = $row['tasa_interes'];
                         $banco_destino = $row['nombre_banco'];
-                        $valor_mas_interes = ($valor_credito * (1 + ($tasa_interes / 100)))  + $costo_transferencia;
+                        $valor_mas_interes = ($valor_credito * (1 + $tasa_interes))  + $costo_transferencia;
                         if ($monto != $valor_mas_interes)
                             echo "Error en la transferencia: Se debe pagar un total de $valor_mas_interes JaveCoins del valor del crédito y los intereses, así como el costo de la transferencia, asegurese de poner la misma cantidad en el monto de la transferencia";
                         else {
