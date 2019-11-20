@@ -1,6 +1,9 @@
 <?php 
     session_start();
     include_once '../config.php';
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'User') {
+        header('Location: ../login_registro/login.php');
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -56,7 +59,11 @@
             header("Location: http://localhost/login_registro/login.php"); 
         }
     }
-    
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
+    }
     ?> 
     </body>
 </html>

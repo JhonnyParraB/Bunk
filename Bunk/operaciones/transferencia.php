@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'User') {
+        header('Location: ../login_registro/login.php');
+    }
+?>
 <!DOCTYPE HTML>
 <html>
 
@@ -15,7 +21,7 @@
     include_once dirname(__FILE__) . '/../utils/utils.php';
 
     //ESTO DEBERIA EXTRAERSE DE LA SESIÓN
-    $cliente_id = 1;
+    $cliente_id = $_SESSION['Persona'];
 
 
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
@@ -144,6 +150,11 @@
                 }
             }
         }
+    }
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
     }
 
     ?>

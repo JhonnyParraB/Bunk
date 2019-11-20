@@ -17,6 +17,7 @@
             <h2>Responder Crédito</h2>
             <?php
                 include_once '../../config.php';
+                include '../../utils/utils.php';
                 $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
                 if(mysqli_connect_errno()){
                     echo "Error en la conexión: ".mysqli_conecct_error()."<br>";

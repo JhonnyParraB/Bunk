@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'User') {
+        header('Location: ../login_registro/login.php');
+    }
+?>
 <!DOCTYPE HTML>
 <html>
 
@@ -8,6 +14,9 @@
 </head>
 
 <body>
+    <form method="POST" action=<?$_SERVER['PHP_SELF']?>>
+        <input type=submit name=salir value=Salir></input>
+    </form>
     <h1>Hacer una compra con la tarjeta de crédito</h1>
 
     <?php
@@ -15,7 +24,7 @@
     include_once dirname(__FILE__) . '/../utils/utils.php';
 
     //ESTO DEBERIA EXTRAERSE DE LA SESIÓN
-    $cliente_id = 1;
+    $cliente_id = $_SESSION['Persona'];
 
     $formularioCompra = "";
     $formularioCompra .= '<form action="compra.php" method="post">';
@@ -69,6 +78,11 @@
                 echo 'Hubo un error al intentar realizar la compra' . mysqli_error($con);
             }
         }
+    }
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
     }
 
     ?>

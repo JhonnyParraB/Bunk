@@ -40,7 +40,7 @@
             </tr>
         <?php
             //ESTO DEBE EXTRAERSE DE LA SESIÓN
-            $cliente_id = 1;
+            $cliente_id = $_SESSION['Persona'];
 
             $sql = "SELECT cr.fecha_respuesta, cr.id, cr.estado,  b.nombre,  cr.tasa_interes, cr.fecha_pago, cr.valor, cr.fecha_solicitud, cr.mensaje
                     FROM CREDITOS cr, BANCOS b
