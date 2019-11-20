@@ -6,7 +6,7 @@
 <html>
     <head>
         <title>Login</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
 
@@ -48,6 +48,7 @@
                 if($fila['usuario'] == $_POST["User"] and ($fila['contrasena'] == $_POST["Password"] or $fila['contrasena'] == crypt($_POST["Password"],'banco')) )
                 {
                     $_SESSION['Persona'] = $fila['id'];
+                    $_SESSION['Rol'] = 'Admin';
                     header("Location: http://localhost/administrador/home_admin.php"); 
                 }
             }
@@ -58,6 +59,7 @@
                 if($fila["usuario"] == $_POST["User"] && $fila["contrasena"] == $_POST["Password"])
                 {
                     $_SESSION['Persona'] = $fila['id'];
+                    $_SESSION['Rol'] = 'User';
                     header("Location: http://localhost/cliente/home_cliente.php"); 
                 }
             }
