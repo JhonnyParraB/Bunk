@@ -204,6 +204,7 @@
                 `fecha` DATETIME NOT NULL,
                 `destino_cuenta_ahorro_id` INT NULL,
                 `destino_credito_id` INT NULL,
+                `actor` VARCHAR(45) NOT NULL DEFAULT 'VISITANTE',
                 PRIMARY KEY (`id`),
                 INDEX `fk_Consignaciones_CUENTAS_AHORRO1_idx` (`destino_cuenta_ahorro_id` ASC) ,
                 INDEX `fk_Consignaciones_CREDITOS1_idx` (`destino_credito_id` ASC) ,
@@ -223,6 +224,7 @@
                 `monto` DECIMAL(12,2) NOT NULL,
                 `fecha` DATETIME NOT NULL,
                 `cuenta_ahorro_id` INT NOT NULL,
+                `actor` VARCHAR(45) NOT NULL DEFAULT 'CLIENTE',
                 PRIMARY KEY (`id`),
                 INDEX `fk_RETIROS_CUENTAS_AHORRO1_idx` (`cuenta_ahorro_id` ASC) ,
                 CONSTRAINT `fk_RETIROS_CUENTAS_AHORRO1`
