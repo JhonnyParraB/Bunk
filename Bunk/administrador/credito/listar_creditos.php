@@ -39,9 +39,9 @@
             </tr>
         <?php
             $sql = "SELECT cr.id, b.nombre, c.cedula, c.email, cr.valor, cr.tasa_interes, cr.fecha_pago, 
-                            cr.dias_mora, cr.pagado, cr.fecha_aprobacion
+                            cr.dias_mora, cr.pagado, cr.fecha_respuesta
                     FROM Clientes c, Bancos b, creditos cr
-                    WHERE b.id = cr.banco_id AND c.id=cr.cliente_id AND cr.aprobado=1";
+                    WHERE b.id = cr.banco_id AND c.id=cr.cliente_id AND cr.estado='APROBADO'";
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';
@@ -52,9 +52,9 @@
                 $datos.='</tr>';
             }
             $sql = "SELECT cr.id, b.nombre, v.cedula, v.email, cr.valor, cr.tasa_interes, cr.fecha_pago, 
-                            cr.dias_mora, cr.pagado, cr.fecha_aprobacion
+                            cr.dias_mora, cr.pagado, cr.fecha_respuesta
                     FROM visitantes v, Bancos b, creditos cr
-                    WHERE b.id = cr.banco_id AND v.id=cr.visitante_id AND cr.aprobado=1";
+                    WHERE b.id = cr.banco_id AND v.id=cr.visitante_id AND cr.estado='APROBADO'";
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';
