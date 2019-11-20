@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -37,7 +37,7 @@
 
     $formularioSolicitarTarjetaCredito = "";
     $formularioSolicitarTarjetaCredito .= '<form action="solicitar_tarjeta_credito.php" method="post">';
-    $formularioAbrirCuentaAhorros .='<input type=submit name=salir value=Salir></input>';
+    $formularioSolicitarTarjetaCredito .='<input type=submit name=salir value=Salir></input><br>';
     $formularioSolicitarTarjetaCredito .= crearSelect('Cuentas de ahorro', 'cuenta_ahorro', $cuentas_ahorro);
 
     $formulario = array(

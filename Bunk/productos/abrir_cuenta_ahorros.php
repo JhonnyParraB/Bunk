@@ -9,7 +9,7 @@
     <head>
         <meta charset="UTF-8">
         <title></title>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
         <h1>Abrir Cuenta de Ahorros</h1>
@@ -30,7 +30,7 @@
 
             $formularioAbrirCuentaAhorros = "";
             $formularioAbrirCuentaAhorros .= '<form action="abrir_cuenta_ahorros.php" method="post">';
-            $formularioAbrirCuentaAhorros .='<input type=submit name=salir value=Salir></input>';
+            $formularioAbrirCuentaAhorros .='<input type=submit name=salir value=Salir></input><br>';
             $formularioAbrirCuentaAhorros .= crearSelect('Banco', 'banco', $bancos);
 
             $formulario = array(

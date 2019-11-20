@@ -1,8 +1,5 @@
 <?php
     session_start();
-    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'User') {
-        header('Location: ../login_registro/login.php');
-    }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -10,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -32,7 +29,9 @@
 
     $formularioSolicitarCredito = "";
     $formularioSolicitarCredito .= '<form action="solicitar_credito.php" method="post">';
-    $formularioAbrirCuentaAhorros .='<input type=submit name=salir value=Salir></input>';
+    if(isset($_SESSION['Rol']) and $_SESSION['Rol'] == 'User'){
+        $formularioSolicitarCredito .='<input type=submit name=salir value=Salir></input><br>';
+    }
 
     $formularioSolicitarCredito .= crearSelect('Banco', 'banco', $bancos);
 

@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -37,6 +37,7 @@
 
     $formularioTransferencia = "";
     $formularioTransferencia .= '<form action="transferencia.php" method="post">';
+    $formularioTransferencia .= '<input type=submit name=salir value=Salir></input><br>';
     $formularioTransferencia .= crearSelect('Cuenta de ahorro de origen', 'cuenta_ahorro', $cuentas_ahorro) . '</br>';
     $tipo_destino = array(
         'cuenta_ahorro' => 'Cuenta de ahorros',

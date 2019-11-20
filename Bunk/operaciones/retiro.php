@@ -14,6 +14,7 @@
     </head>
     <body>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <input type=submit name=salir value=Salir></input><br>
             <label for="monto">Monto: </label>
             <input type="number" name="monto">
             <label for="numeroCuenta">Número de Cuenta: </label>
