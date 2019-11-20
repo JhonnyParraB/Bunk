@@ -37,6 +37,7 @@
 
             // tarjetas
             pagarTarjetas($con);
+            incrementarCuentasAhorro($con);
         } else {
             echo "Es festivo, porfavor intentelo un día hábil<br>";
         }
@@ -54,29 +55,29 @@
         while ($fila = mysqli_fetch_array($resultado)) {
             $interes = getInteres($con, $fila['banco_id']);
             if ($fila['fecha_pagado'] < $fila['fecha_pago']) {
-                $datos .= "<tr><td>" . $filas['id'] . "</td><td>0</td><td>Pagado</td><tr>";
+                $datos .= "<tr><td>" . $fila['id'] . "</td><td>0</td><td>Pagado</td><tr>";
             } else if ($fila['fecha_pagado'] < $fecha) {
                 $your_date = strtotime($fila['fecha_pagado']);
                 $datediff = $fecha1 - $your_date;
                 $cobro = round($datediff / (60 * 60 * 24)) * $interes;
-                $cobro *= $filas['valor'];
+                $cobro *= $fila['valor'];
                 $sql = "UPDATE creditos 
                                 SET valor=" . $fila['valor'] + $cobro . "
                                 WHERE id =" . $fila['id'];
                 if (!mysqli_query($con, $sql)) {
                     echo "Error: " . mysqli_error($con) . "<br>";
                 }
-                $datos .= "<tr><td>" . $filas['id'] . "</td><td>" . $cobro . "</td><td>Pagado, intereses por los días de mora</td><tr>";
+                $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $cobro . "</td><td>Pagado, intereses por los días de mora</td><tr>";
             } else {
                 //enviar correo
-                $cobro = 30 * $interes * $filas['valor'];
+                $cobro = 30 * $interes * $fila['valor'];
                 $sql = "UPDATE creditos 
                                 SET valor=" . $fila['valor'] + $cobro . "
                                 WHERE id =" . $fila['id'];
                 if (!mysqli_query($con, $sql)) {
                     echo "Error: " . mysqli_error($con) . "<br>";
                 }
-                $datos .= "<tr><td>" . $filas['id'] . "</td><td>" . $cobro . "</td><td>No pagado, intereses por un mes de mora</td><tr>";
+                $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $cobro . "</td><td>No pagado, intereses por un mes de mora</td><tr>";
             }
         }
         return $datos;
@@ -117,9 +118,9 @@
             }
             if ($valor == 0) {
                 //cobrar a cuentas mismo sql pero miras que solo hagas cant+1
-                $datos .= "<tr><td>" . $filas['id'] . "</td><td>" . $valor . "</td><td>Pagado</td><tr>";
+                $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $valor . "</td><td>Pagado</td><tr>";
             } else {
-                $datos .= "<tr><td>" . $filas['id'] . "</td><td>0</td><td>Saldo insuficiente</td><tr>";
+                $datos .= "<tr><td>" . $fila['id'] . "</td><td>0</td><td>Saldo insuficiente</td><tr>";
             }
         }
         return $datos;
@@ -135,13 +136,13 @@
             $compra_id = $row['id'];
             $cuotas = $row['cuotas'];
             $valor = $row['valor'];
-            $cuotas_restantes = $resultado['cuotas_restantes'];
+            $cuotas_restantes = $row['cuotas_restantes'];
             $sql = "SELECT ca.id AS cuenta_ahorro_id, ca.saldo AS saldo, tc.tasa_interes AS tasa_interes
                             FROM CUENTAS_AHORRO ca, TARJETAS_CREDITO tc
-                            WHERE tc.id =$tarjeta_credito_id AND tc.cuenta_ahorro_id=ca.id";
+                            WHERE tc.id =$tarjeta_credito_id AND tc.cuenta_ahorro_id=ca.id AND tc.estado='APROBADA'";
 
             $resultado1 = mysqli_query($con, $sql);
-            $row1 = mysqli_fetch($resultado1);
+            $row1 = mysqli_fetch_array($resultado1);
             $tasa_interes = $row1['tasa_interes'];
             $saldo = $row1['saldo'];
             $cuenta_ahorro_id = $row1['cuenta_ahorro_id'];
@@ -184,7 +185,8 @@
         $row1 = mysqli_fetch_array($resultado1);
         return $row1['interes_mora'];
     }
-    function incrementarCuentasAhorro($con){
+    function incrementarCuentasAhorro($con)
+    {
         $sql = "SELECT b.interes_cuenta_ahorros AS tasa_interes, ca.id AS cuenta_ahorro_id, ca.saldo AS saldo
                 FROM BANCOS b, CUENTAS_AHORRO ca
                 WHERE ca.banco_id = b.id";
@@ -198,7 +200,7 @@
             $sql = "UPDATE CUENTAS_AHORRO SET saldo=$saldo WHERE id=$cuenta_ahorro_id";
 
             if (mysqli_query($con, $sql)) {
-                echo "Se incrementa la cuenta de ahorros con número $cuenta_ahorro_id de $saldo_viejo JaveCoins a $saldo con una tasa de interés de $tasa_interes" . "</br>";
+                echo "Se incrementa la cuenta de ahorros con número $cuenta_ahorro_id de $saldo_viejo JaveCoins a $saldo JaveCoins con una tasa de interés de $tasa_interes" . "</br>";
             } else {
                 echo "Hubo un error al incrementar el saldo de la cuenta de ahorros con número $cuenta_ahorro_id: " . mysqli_error($con);
             }
