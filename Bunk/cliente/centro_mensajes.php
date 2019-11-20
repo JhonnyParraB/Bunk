@@ -22,6 +22,7 @@
         <table class="table">
             <tr>
                 <th>Fecha de respuesta</th>
+                <th>Id</th>
                 <th>Estado</th>
                 <th>Banco</th>
                 <th>Tasa de Interés</th>
@@ -35,9 +36,9 @@
             //ESTO DEBE EXTRAERSE DE LA SESIÓN
             $cliente_id = 1;
 
-            $sql = "SELECT cr.fecha_respuesta, cr.estado, b.nombre, cr.tasa_interes, cr.fecha_pago, cr.valor, cr.fecha_solicitud, cr.mensaje
-                    FROM CLIENTES c, CREDITOS cr, BANCOS b
-                    WHERE cr.cliente_id = $cliente_id AND cr.banco_id=b.id AND (cr.estado='APROBADO' OR cr.estado='RECHAZADO')
+            $sql = "SELECT cr.fecha_respuesta, cr.id, cr.estado,  b.nombre,  cr.tasa_interes, cr.fecha_pago, cr.valor, cr.fecha_solicitud, cr.mensaje
+                    FROM CREDITOS cr, BANCOS b
+                    WHERE b.id=cr.banco_id AND cr.cliente_id = $cliente_id  AND (cr.estado='APROBADO' OR cr.estado='RECHAZADO')
                     ORDER BY cr.fecha_respuesta DESC";
             $resultado = mysqli_query($con,$sql);
 
@@ -57,6 +58,7 @@
         <table class="table">
         <tr>
             <th>Fecha de respuesta</th>
+            <th>Número</th>
             <th>Estado</th>
             <th>Cupo máximo</th>
             <th>Cuota de manejo</th>
@@ -70,14 +72,14 @@
         </tr>
         <?php
             $datos="";
-            $sql = "SELECT tc.fecha_respuesta, tc.estado, tc.cupo_maximo, tc.tasa_interes, tc.sobrecupo, tc.cuenta_ahorro_id, tc.fecha_solicitud, tc.mensaje
-                    FROM CLIENTES c, TARJETAS_CREDITO tc, BANCOS b, CUENTAS_AHORRO ca
-                    WHERE ca.cliente_id = $cliente_id AND ca.banco_id=b.id AND (tc.estado='APROBADO' OR tc.estado='RECHAZADO') AND tc.cuenta_ahorro_id=ca.id
+            $sql = "SELECT tc.fecha_respuesta, tc.id,  tc.estado, tc.cupo_maximo, tc.cuota_manejo, tc.tasa_interes, tc.sobrecupo, tc.cuenta_ahorro_id, b.nombre, tc.fecha_solicitud, tc.mensaje
+                    FROM TARJETAS_CREDITO tc, BANCOS b, CUENTAS_AHORRO ca
+                    WHERE ca.cliente_id = $cliente_id AND ca.id=tc.cuenta_ahorro_id AND ca.banco_id = b.id AND (tc.estado='APROBADA' OR tc.estado='RECHAZADA')
                     ORDER BY tc.fecha_respuesta DESC";
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';
-                for($i =0; $i < 10; ++$i){
+                for($i =0; $i < 11; $i++){
                     $datos.="<td>".$fila[$i]."</td>";
                 }
                 $datos.='</tr>';

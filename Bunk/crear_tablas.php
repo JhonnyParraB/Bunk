@@ -143,7 +143,7 @@
             
             
             
-            CREATE TABLE IF NOT EXISTS `Bunk`.`COMPRA` (
+            CREATE TABLE IF NOT EXISTS `Bunk`.`COMPRAS` (
                 `id` INT NOT NULL AUTO_INCREMENT,
                 `cuotas` INT NOT NULL,
                 `valor` DECIMAL(12,2) NOT NULL,
@@ -152,8 +152,8 @@
                 `fecha` DATE NOT NULL,
                 `tarjeta_credito_id` INT NOT NULL,
                 PRIMARY KEY (`id`),
-                INDEX `fk_COMPRA_TARJETAS_CREDITO1_idx` (`tarjeta_credito_id` ASC)  ,
-                CONSTRAINT `fk_COMPRA_TARJETAS_CREDITO1`
+                INDEX `fk_COMPRAS_TARJETAS_CREDITO1_idx` (`tarjeta_credito_id` ASC)  ,
+                CONSTRAINT `fk_COMPRAS_TARJETAS_CREDITO1`
                 FOREIGN KEY (`tarjeta_credito_id`)
                 REFERENCES `Bunk`.`TARJETAS_CREDITO` (`id`)
                 ON DELETE NO ACTION
