@@ -1,4 +1,10 @@
 <?php 
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    require 'PHPMailer/src/Exception.php';
+    require 'PHPMailer/src/PHPMailer.php';
+    require 'PHPMailer/src/SMTP.php';
+
     function validar($data) {
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
@@ -96,5 +102,30 @@
         }
         $select .="</select>";
         return $select;
+    }
+
+    function sendemail($to, $name, $last, $subject, $msg){
+        $mail = new PHPMailer(true);
+        try{
+            $mail->isSMTP();
+            $mail->CharSet = 'utf-8';
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+            $mail->Username = "pruebadonado@gmail.com";
+            $mail->Password = "Prueba.1234";
+            $mail->setFrom('noreply@donado.com', 'No Reply');
+            $mail->addAddress($to, $name.' '.$last);
+            $mail->Subject = $subject;
+            $mail->Body = $msg;
+            $mail->send();
+        }catch(Exception $e){
+            echo $e->errorMessage();
+        }
+        catch (\Exception $e)
+        {
+        echo $e->getMessage();
+        }
     }
 ?>

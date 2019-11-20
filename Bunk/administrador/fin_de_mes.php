@@ -3,6 +3,7 @@
     if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'Admin') {
         header('Location: ../login_registro/login.php');
     }
+    include_once dirname(__FILE__) . '/../utils/utils.php';
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -63,6 +64,11 @@
         $resultado = mysqli_query($con, $sql);
         $datos = "";
         while ($fila = mysqli_fetch_array($resultado)) {
+            $id_visitante = $fila['visitante_id'];
+            $sql = "SELECT * FROM VISITANTES WHERE id=$id_visitante";
+            $roww = mysqli_fetch_array(mysqli_query($con, $sql));
+            $email_visitante =  $roww['email'];
+
             $interes = getInteres($con, $fila['banco_id']);
             if ($fila['fecha_pagado'] < $fila['fecha_pago']) {
                 $datos .= "<tr><td>" . $fila['id'] . "</td><td>0</td><td>Pagado</td><tr>";
@@ -80,7 +86,14 @@
                 }
                 $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $cobro . "</td><td>Pagado, intereses por los días de mora</td><tr>";
             } else {
-                //enviar correo
+                
+                $to = $email_visitante;
+                $msg = "Usted se encuentra en mora, hay créditos que vencieron su fecha límite de pago.";
+                $name = 'Visitante';
+                $last = 'Visitante';
+                $subject = 'Bunk: Usted no ha pagado su crédito';
+                sendemail($to, $name, $last, $subject, $msg);
+
                 $cobro = 30 * $interes * $fila['valor'];
                 
                 $sql = "UPDATE creditos 
@@ -152,14 +165,17 @@
             $cuotas = $row['cuotas'];
             $valor = $row['valor'];
             $cuotas_restantes = $row['cuotas_restantes'];
-            $sql = "SELECT ca.id AS cuenta_ahorro_id, ca.saldo AS saldo, tc.tasa_interes AS tasa_interes
-                            FROM CUENTAS_AHORRO ca, TARJETAS_CREDITO tc
-                            WHERE tc.id =$tarjeta_credito_id AND tc.cuenta_ahorro_id=ca.id AND tc.estado='APROBADA'";
-
+            $sql = "SELECT ca.id AS cuenta_ahorro_id, ca.saldo AS saldo, tc.tasa_interes AS tasa_interes, c.email AS email, c.nombre AS nombre, c.apellido AS apellido
+                            FROM CUENTAS_AHORRO ca, TARJETAS_CREDITO tc, CLIENTES c
+                            WHERE tc.id =$tarjeta_credito_id AND tc.cuenta_ahorro_id=ca.id AND tc.estado='APROBADA' AND c.id=ca.cliente_id";
+            
             $resultado1 = mysqli_query($con, $sql);
             $row1 = mysqli_fetch_array($resultado1);
             $tasa_interes = $row1['tasa_interes'];
             $saldo = $row1['saldo'];
+            $email = $row1['email'];
+            $nombre = $row1['nombre'];
+            $apellido = $row1['apellido'];
             $cuenta_ahorro_id = $row1['cuenta_ahorro_id'];
             $valorAPagar = 0;
             $valorAPagar = $valor / $cuotas;
@@ -190,6 +206,15 @@
                 }
             } else {
                 echo "No hay suficientes fondos en la cuenta de ahorros $cuenta_ahorro_id, se enviará un correo al cliente." . "</br>";
+                $to = $email;
+                $msg = "Usted no dispone de los fondos suficientes en la cuenta de ahorros $cuenta_ahorro_id, 
+                        para pagar el valor de $valorAPagar que corresponde a la compra con id $compra_id realizada con la
+                        tarjeta de crédito con el número $tarjeta_credito_id.";
+                $name = $nombre;
+                $last = $apellido;
+                $subject = 'Bunk: Incapacidad para pagar la compra asociada a una tarjeta de crédito';
+                sendemail($to, $name, $last, $subject, $msg);
+
             }
         }
     }
