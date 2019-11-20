@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include_once '../config.php';
 ?>
 <!DOCTYPE HTML>
@@ -44,8 +45,9 @@
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado))
             {
-                if($fila['usuario'] == $_POST["User"] and $fila['contrasena'] == $_POST["Password"])
+                if($fila['usuario'] == $_POST["User"] and ($fila['contrasena'] == $_POST["Password"] or $fila['contrasena'] == crypt($_POST["Password"],'banco')) )
                 {
+                    $_SESSION['Persona'] = $fila['id'];
                     header("Location: http://localhost/administrador/home_admin.php"); 
                 }
             }
@@ -55,11 +57,12 @@
             {
                 if($fila["usuario"] == $_POST["User"] && $fila["contrasena"] == $_POST["Password"])
                 {
+                    $_SESSION['Persona'] = $fila['id'];
                     header("Location: http://localhost/cliente/home_cliente.php"); 
                 }
             }
         }
-        if(isset($_POST['Register']))
+        if(isset($_POST['register']))
         {
             header("Location: http://localhost/login_registro/registro.php"); 
         }
