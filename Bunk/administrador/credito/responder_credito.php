@@ -22,7 +22,6 @@
                 if(mysqli_connect_errno()){
                     echo "Error en la conexión: ".mysqli_conecct_error()."<br>";
                 }
-                include "../../utils/utils.php";
                 $credito=$_SESSION['credito'];
                 $sql = "SELECT * from CREDITOS WHERE id = $credito";
                 $resultado = mysqli_query($con,$sql);

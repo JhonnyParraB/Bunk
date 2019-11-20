@@ -45,7 +45,7 @@
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';
-                for($i =1; $i <=6; ++$i){
+                for($i =1; $i <=7; ++$i){
                     $datos.="<td>".$fila[$i]."</td>";
                 }
                 $datos.="<td><a href=".$_SERVER['PHP_SELF']."?credito=".$fila[0].">Responder solicitud</td>";
@@ -58,7 +58,7 @@
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';
-                for($i =1; $i <=count($fila); ++$i){
+                for($i =1; $i <=7; ++$i){
                     $datos.="<td>".$fila[$i]."</td>";
                 }
                 $datos.="<td><a href=".$_SERVER['PHP_SELF']."?credito=".$fila[0].">Responder solicitud</td>";
