@@ -26,7 +26,7 @@
             INSERT INTO DIAS_FESTIVOS (FECHA) VALUES ('2019-12-08');
             INSERT INTO DIAS_FESTIVOS (FECHA) VALUES ('2019-12-25')";
     if(mysqli_multi_query($con,$sql)){
-        echo "Todo done<br>";
+        header("Location: inserts.php");
     }else{
         echo "Error en el query: ".mysqli_error($con)."<br>";
     }
