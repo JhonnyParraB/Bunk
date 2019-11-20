@@ -31,7 +31,7 @@
             <li><a href="../operaciones/consignacion.php">Consignar</a></li>
             <li><a href="../operaciones/transferencia.php">Transferencia</a></li>
             <li><a href="../operaciones/retiro.php">Retiro</a></li>
-            <li><a href="../operaciones/retiro.php">Comprar con tarjeta de crédito</a></li>
+            <li><a href="../operaciones/compra.php">Comprar con tarjeta de crédito</a></li>
         </ul>
         <?php
             if(isset($_POST['salir'])){

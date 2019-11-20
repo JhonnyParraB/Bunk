@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'User') {
+        header('Location: ../login_registro/login.php');
+    }
+?>
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -24,6 +30,7 @@
 
             $formularioAbrirCuentaAhorros = "";
             $formularioAbrirCuentaAhorros .= '<form action="abrir_cuenta_ahorros.php" method="post">';
+            $formularioAbrirCuentaAhorros .='<input type=submit name=salir value=Salir></input>';
             $formularioAbrirCuentaAhorros .= crearSelect('Banco', 'banco', $bancos);
 
             $formulario = array(
@@ -50,7 +57,7 @@
                     $nombre_banco = $row['nombre'];
                     $saldo_inial = 0;
                     //ESTO SE DEBE EXTRAER DE LA SESIÓN:
-                    $cliente_id = 1;
+                    $cliente_id = $_SESSION['Persona'];
 
                      
 
@@ -62,6 +69,11 @@
                         echo 'Hubo un error al intentar abrir la cuenta de ahorros '.mysqli_error($con);
                     }
                 }
+            }
+            if(isset($_POST['salir'])){
+                $_SESSION = array();
+                session_destroy();
+                header('Location: ../index.php');
             }
 
         ?>
