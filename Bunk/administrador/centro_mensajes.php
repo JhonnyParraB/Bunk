@@ -34,7 +34,7 @@
             $sql = "SELECT cr.id, b.nombre, c.cedula, c.email, cr.valor, cr.tasa_interes, cr.fecha_pago, cr.fecha_solicitud
                     FROM Clientes c, Bancos b, creditos cr
                     WHERE b.id = cr.banco_id AND c.id=cr.cliente_id AND cr.estado='PENDIENTE'
-                    ORDER BY cr.fecha_solicitud";
+                    ORDER BY cr.fecha_solicitud DESC";
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';
@@ -47,7 +47,7 @@
             $sql = "SELECT cr.id, b.nombre, v.cedula, v.email, cr.valor, cr.tasa_interes, cr.fecha_pago, cr.fecha_solicitud
                     FROM visitantes v, Bancos b, creditos cr
                     WHERE b.id = cr.banco_id AND v.id=cr.visitante_id AND cr.estado='PENDIENTE'
-                    ORDER BY cr.fecha_solicitud";
+                    ORDER BY cr.fecha_solicitud DESC";
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';
@@ -80,7 +80,7 @@
             $sql = "SELECT tc.id, b.nombre, c.nombre, c.apellido, c.cedula, tc.cuenta_ahorro_id, tc.fecha_solicitud
                     FROM Clientes c, Bancos b, tarjetas_credito tc, cuentas_ahorro cu
                     WHERE b.id = cu.banco_id AND c.id=cu.cliente_id AND cu.id=tc.cuenta_ahorro_id AND tc.estado='PENDIENTE'
-                    ORDER BY tc.fecha_solicitud";
+                    ORDER BY tc.fecha_solicitud DESC";
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado)){
                 $datos.='<tr>';

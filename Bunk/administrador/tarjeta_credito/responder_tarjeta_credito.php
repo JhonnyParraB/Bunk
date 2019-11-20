@@ -5,13 +5,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Responder Crédito</title>
+        <title>Responder Tarjeta de Crédito</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
         <form method="POST">
             <input type=submit name=salir value=Salir class='salirBtn'/>
-            <h2>Responder Crédito</h2>
+            <h2>Responder Tarjeta de Crédito</h2>
             <?php
                 include_once '../../config.php';
                 $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
@@ -19,20 +19,15 @@
                     echo "Error en la conexión: ".mysqli_conecct_error()."<br>";
                 }
                 include "../../utils/utils.php";
-                $credito=$_SESSION['credito'];
-                $sql = "SELECT * from CREDITOS WHERE id = $credito";
+                $tarjeta=$_SESSION['tcredito'];
+                $sql = "SELECT * from TARJETAS_CREDITO WHERE id = $tarjeta";
                 $resultado = mysqli_query($con,$sql);
                 $row = mysqli_fetch_array($resultado);
-                $sql = "SELECT interes_credito_visitantes from BANCOS WHERE id = ".$row['banco_id'];
-                $resultado = mysqli_query($con,$sql);
-                $row1 = mysqli_fetch_array($resultado);
-                $interes_visitantes = $row1['interes_credito_visitantes'];
-                $datos = array(array('Fecha de pago', 'fechapago', 'date', $row['fecha_pago']));
-                if($row['cliente_id']!=null){
-                    array_push($datos, array('Tasa de interés', 'interes', 'text', $row['tasa_interes']));
-                }else if($row['visitante_id']!=null){
-                    array_push($datos, array('Tasa de interés', 'interes', 'text', $interes_visitantes));
-                }
+                $datos = array(
+                        array('Cupo máximo', 'cupo', 'text', ""),
+                        array('Sobrecupo', 'sobre', 'text', ""),
+                        array('Cuota de manejo', 'cuota', 'text', ""),
+                        array('Tasa de interés', 'interes', 'text', ""));
                 $linea=crearFormulario2($datos);
                 echo $linea;
             ?>
@@ -46,14 +41,24 @@
                 
                 $linea=crearFormulario2($datos);
                 echo $linea;
-
                 date_default_timezone_set('America/Bogota');
                 $fecha_solicitud = date('Y-m-d H:i:s', time());
                 if (isset($_POST['aceptar'])) {
+                    $cupo = validar($_POST['cupo']);
+                    $sobre = validar($_POST['sobre']);
+                    $cuota = validar($_POST['cuota']);
                     $tasa = validar($_POST['interes']);
-                    $fecha = validar($_POST['fechapago']);
                     $mensaje = validar($_POST['mensaje']);
                     $errores="";
+                    if(!is_numeric($cupo)){
+                        $errores.= "Cupo máximo: Solo se permiten números.<br>";
+                    }
+                    if(!is_numeric($sobre)){
+                        $errores.= "Sobrecupo: Solo se permiten números.<br>";
+                    }
+                    if(!is_numeric($cuota)){
+                        $errores.= "Cuota de manejo: Solo se permiten números.<br>";
+                    }
                     if(!is_numeric($tasa)){
                         $errores.= "Tasa de interés: Solo se permiten números.<br>";
                     }
@@ -63,13 +68,15 @@
                     if($errores!=""){
                         echo $errores;
                     }else{
-                        $sql = "UPDATE creditos 
-                                SET tasa_interes=$tasa,
-                                    fecha_pago='$fecha',
+                        $sql = "UPDATE TARJETAS_CREDITO 
+                                SET cupo_maximo=$cupo,
+                                    sobrecupo=$sobre,
+                                    cuota_manejo=$cuota,
+                                    tasa_interes=$tasa,
                                     estado='APROBADO',
                                     fecha_respuesta='$fecha_solicitud',
                                     mensaje='$mensaje'
-                                WHERE id = $credito";
+                                WHERE id = $tarjeta";
                         if(mysqli_query($con,$sql)){
                             header('Location: ../centro_mensajes.php');
                         }else{
@@ -85,11 +92,11 @@
                     if($errores!=""){
                         echo $errores;
                     }else{
-                        $sql = "UPDATE creditos 
+                        $sql = "UPDATE TARJETAS_CREDITO 
                                     SET estado='RECHAZADO',
                                         fecha_respuesta='$fecha_solicitud',
                                         mensaje='$mensaje'
-                                    WHERE id = $credito";
+                                    WHERE id = $tarjeta";
                         if(mysqli_query($con,$sql)){
                             header('Location: ../centro_mensajes.php');
                         }else{
