@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Editar Bancos</title>
+        <title>Editar Banco</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
@@ -24,30 +24,46 @@
             $resultado = mysqli_query($con,$sql);
             $row = mysqli_fetch_array($resultado);
             $datos = array(
-                            array('Interés Crédito Visitante', 'intvisitante', 'number', $row['interes_credito_visitantes']), 
-                            array('Interés Cuenta Ahorro', 'intahorro', 'number', $row['interes_cuenta_ahorros']),
-                            array('Costo Transferencia', 'inttransf', 'number', $row['costo_transferencia']),
-                            array('Interés Mora', 'intmora', 'number', $row['interes_mora']),
+                            array('Interés Crédito Visitante', 'intvisitante', 'text', $row['interes_credito_visitantes']), 
+                            array('Interés Cuenta Ahorro', 'intahorro', 'text', $row['interes_cuenta_ahorros']),
+                            array('Costo Transferencia', 'inttransf', 'text', $row['costo_transferencia']),
+                            array('Interés Mora', 'intmora', 'text', $row['interes_mora']),
                             array('Volver','volver', 'submit'),
                             array('Guardar', 'guardar', 'submit')); 
             $linea=crearFormulario2($datos);
             echo $linea;
             if (isset($_POST['guardar'])) {
-                echo "toy";
-                $intvisitante = $_POST['intvisitante'];
-                $intahorro = $_POST['intahorro'];
-                $inttransf = $_POST['inttransf'];
-                $intmora = $_POST['intmora'];
-                $sql = "UPDATE BANCOS 
-                        SET interes_credito_visitantes=$intvisitante,
-                            interes_cuenta_ahorros= $intahorro,
-                            costo_transferencia=$inttransf,
-                            interes_mora=$intmora
-                        WHERE id = $banco";
-                if(mysqli_query($con,$sql)){
-                    header('Location: listar_bancos.php');
+                $intvisitante = validar($_POST['intvisitante']);
+                $intahorro = validar($_POST['intahorro']);
+                $inttransf = validar($_POST['inttransf']);
+                $intmora = validar($_POST['intmora']);
+                $errores="";
+                if(!is_numeric($intvisitante)){
+                    $errores.= "Interés Crédito Visitante: Solo se permiten números.<br>";
+                }
+                if(!is_numeric($intahorro)){
+                    $errores.= "Interés Cuenta Ahorro: Solo se permiten números.<br>";
+                }
+                if(!is_numeric($inttransf)){
+                    $errores.= "Costo Transferencia: Solo se permiten números.<br>";
+                }
+                if(!is_numeric($intmora)){
+                    $errores.= "Interés Mora: Solo se permiten números.<br>";
+                }
+                if($errores!=""){
+                    echo $errores;
                 }else{
-                    echo "Error: ".mysqli_error($con)."<br>";
+                    $sql = "UPDATE BANCOS 
+                            SET interes_credito_visitantes=$intvisitante,
+                                interes_cuenta_ahorros= $intahorro,
+                                costo_transferencia=$inttransf,
+                                interes_mora=$intmora
+                            WHERE id = $banco";
+                    if(mysqli_query($con,$sql)){
+                        header('Location: listar_bancos.php');
+                    }else{
+                        echo "Error: ".mysqli_error($con)."<br>";
+                    }
                 }
             }
             if (isset($_POST['volver'])) {
