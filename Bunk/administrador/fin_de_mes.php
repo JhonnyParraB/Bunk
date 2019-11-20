@@ -25,16 +25,17 @@
         $resultado = mysqli_query($con, $sql);
         if (mysqli_num_rows($resultado) == 0) {
             // creditos
-            $datos = "<table class='table'>
+            $datos = "<h2>Créditos</h2>
+                <table class='table'>
                                 <tr>
                                     <th>Id</th>
                                     <th>Cobrado</th>
                                     <th>Resultado</th>
                                 </tr>";
-            cobrarVisitantes($con);
-            cobrarClientes($con, $fecha);
+            $datos.=cobrarVisitantes($con);
+            $datos.=cobrarClientes($con, $fecha);
             $datos .= "</table>";
-
+            echo $datos;
             // tarjetas
             pagarTarjetas($con);
             incrementarCuentasAhorro($con);
@@ -47,6 +48,7 @@
     {
         date_default_timezone_set('America/Bogota');
         $fecha1 = time();
+        
         $sql = "SELECT id, visitante_id, valor, tasa_interes, fecha_pago, fecha_pagado, banco_id
                         FROM creditos
                         WHERE estado='APROBADO' AND visitante_id IS NOT NULL";
@@ -61,6 +63,7 @@
                 $datediff = $fecha1 - $your_date;
                 $cobro = round($datediff / (60 * 60 * 24)) * $interes;
                 $cobro *= $fila['valor'];
+                
                 $sql = "UPDATE creditos 
                                 SET valor=" . $fila['valor'] + $cobro . "
                                 WHERE id =" . $fila['id'];
@@ -71,6 +74,7 @@
             } else {
                 //enviar correo
                 $cobro = 30 * $interes * $fila['valor'];
+                
                 $sql = "UPDATE creditos 
                                 SET valor=" . $fila['valor'] + $cobro . "
                                 WHERE id =" . $fila['id'];
@@ -86,6 +90,7 @@
     {
         date_default_timezone_set('America/Bogota');
         $fecha1 = time();
+        
         $sql = "SELECT id, cliente_id, valor, tasa_interes, fecha_pago, fecha_pagado, banco_id
                         FROM creditos
                         WHERE estado='APROBADO' AND cliente_id IS NOT NULL
@@ -95,16 +100,18 @@
         while ($fila = mysqli_fetch_array($resultado)) {
             $interes = getInteres($con, $fila['banco_id']);
             $valor = $fila['valor'];
+            
             $sql = "SELECT * FROM CUENTAS_AHORRO WHERE cliente_id=" . $fila['cliente_id'];
             $resultado1 = mysqli_query($con, $sql);
             $pagos = array();
             $cant = 0;
             while ($row = mysqli_fetch_array($resultado1)) {
                 if ($valor < $row['saldo']) {
+                    
                     $sql = "UPDATE creditos 
                                     SET valor=0,
                                         fecha_pagado='$fecha',
-                                        pagado = 1;
+                                        pagado = 1
                                     WHERE id =" . $fila['id'];
                     if (!mysqli_query($con, $sql)) {
                         echo "Error: " . mysqli_error($con) . "<br>";
