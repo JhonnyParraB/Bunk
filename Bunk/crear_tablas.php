@@ -63,6 +63,7 @@
                     `fecha_aprobacion` DATETIME NULL,
                     `fecha_solicitud` DATETIME NULL,
                     `banco_id` INT NOT NULL,
+                    `mensaje` VARCHAR(300) NULL,
                     PRIMARY KEY (`id`),
                     INDEX `fk_CREDITOS_VISITANTES1_idx` (`cliente_id` ASC) ,
                     INDEX `fk_CREDITOS_CLIENTES1_idx` (`visitante_id` ASC) ,
@@ -129,6 +130,7 @@
                 `cuenta_ahorro_id` INT NOT NULL,
                 `fecha_aprobacion` DATETIME NULL,
                 `fecha_solicitud` DATETIME NULL,
+                `mensaje` VARCHAR(300) NULL,
                 PRIMARY KEY (`id`),
                 INDEX `fk_TARJETAS_CREDITO_CUENTAS_AHORRO_idx` (`cuenta_ahorro_id` ASC)  ,
                 CONSTRAINT `fk_TARJETAS_CREDITO_CUENTAS_AHORRO`
