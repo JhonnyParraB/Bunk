@@ -68,12 +68,12 @@
                     INDEX `fk_CREDITOS_CLIENTES1_idx` (`visitante_id` ASC) ,
                     INDEX `fk_CREDITOS_BANCOS2_idx` (`banco_id` ASC) ,
                     CONSTRAINT `fk_CREDITOS_VISITANTES1`
-                      FOREIGN KEY (`cliente_id`)
+                      FOREIGN KEY (`visitante_id`)
                       REFERENCES `Bunk`.`VISITANTES` (`id`)
                       ON DELETE NO ACTION
                       ON UPDATE NO ACTION,
                     CONSTRAINT `fk_CREDITOS_CLIENTES1`
-                      FOREIGN KEY (`visitante_id`)
+                      FOREIGN KEY (`cliente_id`)
                       REFERENCES `Bunk`.`CLIENTES` (`id`)
                       ON DELETE NO ACTION
                       ON UPDATE NO ACTION,

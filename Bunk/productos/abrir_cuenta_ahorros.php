@@ -24,20 +24,19 @@
 
             $formularioAbrirCuentaAhorros = "";
             $formularioAbrirCuentaAhorros .= '<form action="abrir_cuenta_ahorros.php" method="post">';
-            $formularioAbrirCuentaAhorros .= '<label for="banco">Banco: </label>';
-            $formularioAbrirCuentaAhorros .= crearSelect($bancos, 'banco');
+            $formularioAbrirCuentaAhorros .= crearSelect('Banco', 'banco', $bancos);
 
             $formulario = array(
-                'Abrir' => 'submit'
+                array('Abrir Cuenta de Ahorros', 'abrir_cuenta_ahorros', 'submit', '')
             );
 
-            $formularioAbrirCuentaAhorros .= crearFormulario($formulario);
+            $formularioAbrirCuentaAhorros .= crearFormulario2($formulario);
             $formularioAbrirCuentaAhorros .= '</form>';
             echo $formularioAbrirCuentaAhorros;
 
             if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 
-                if (isset($_POST['Abrir'])){
+                if (isset($_POST['abrir_cuenta_ahorros'])){
                     $banco_id = $_POST['banco'];
                     
 
