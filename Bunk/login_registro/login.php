@@ -46,6 +46,7 @@
             {
                 if($fila['usuario'] == $_POST["User"] and ($fila['contrasena'] == $_POST["Password"] or $fila['contrasena'] == crypt($_POST["Password"],'banco')) )
                 {
+                    $_SESSION['Persona'] = $fila['id'];
                     header("Location: http://localhost/administrador/home_admin.php"); 
                 }
             }
@@ -55,6 +56,7 @@
             {
                 if($fila["usuario"] == $_POST["User"] && $fila["contrasena"] == $_POST["Password"])
                 {
+                    $_SESSION['Persona'] = $fila['id'];
                     header("Location: http://localhost/cliente/home_cliente.php"); 
                 }
             }
