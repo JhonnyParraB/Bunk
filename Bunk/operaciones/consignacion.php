@@ -12,6 +12,7 @@
     <body>
     <?php if(isset($_SESSION['Rol']) and $_SESSION['Rol'] == 'User'): ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <input type=submit name=salir value=Salir></input><br>
             <input type = "radio" name = "tipoConsignacion" value ="Credito">Credito <br>
             <input type = "radio" name = "tipoConsignacion" value ="Ahorros">Ahorros <br>
             <label for="numeroCuenta">Número de cuenta: </label>
@@ -35,6 +36,11 @@
     <?php endif; ?>
     </body>
     <?php 
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
+    }
     if(isset($_POST["consignar"]) )
     {
         $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);

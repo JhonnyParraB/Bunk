@@ -3,6 +3,7 @@
     if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'Admin') {
         header('Location: ../login_registro/login.php');
     }
+    
 ?>
 <!DOCTYPE HTML>
 <html>

@@ -1,10 +1,13 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -26,11 +29,17 @@
 
     $formularioSolicitarCredito = "";
     $formularioSolicitarCredito .= '<form action="solicitar_credito.php" method="post">';
+    if(isset($_SESSION['Rol']) and $_SESSION['Rol'] == 'User'){
+        $formularioSolicitarCredito .='<input type=submit name=salir value=Salir></input><br>';
+    }
+
     $formularioSolicitarCredito .= crearSelect('Banco', 'banco', $bancos);
 
 
     //ESTO SE DEBE EXTRAER DE LA SESIÓN
-    $usuarioAutenticado = false;
+    if(isset($_SESSION['Persona']))
+        $usuarioAutenticado=true;
+    else $usuarioAutenticado = false;
     $formulario = "";
     if ($usuarioAutenticado) {
         $formulario = array(
@@ -73,7 +82,10 @@
             $nombre_banco = $row['nombre'];
 
             //ESTO DEBERIA EXTRAERSE DE LA SESIÓN
-            $usuarioAutenticado = false;
+            if(isset($_SESSION['Persona']))
+                $usuarioAutenticado = true;
+            else
+                $usuarioAutenticado = false;
             $valor = $_POST['valor'];
             $fecha_pago = $_POST['fecha_pago'];
 
@@ -88,7 +100,7 @@
 
             if ($usuarioAutenticado) {
                 //ESTO DEBERIA EXTRAERSE DE LA SESIÓN
-                $cliente_id = 1;
+                $cliente_id = $_SESSION['Persona'];
                 $sql = "SELECT * FROM CLIENTES WHERE id = $cliente_id";
                 $resultado = mysqli_query($con, $sql);
                 $row = mysqli_fetch_array($resultado);
@@ -138,7 +150,11 @@
             }
         }
     }
-
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
+    }
     ?>
 </body>
 

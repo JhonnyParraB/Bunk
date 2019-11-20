@@ -1,6 +1,9 @@
 <?php 
     session_start();
     include_once '../config.php';
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'User') {
+        header('Location: ../login_registro/login.php');
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -11,6 +14,7 @@
     </head>
     <body>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+            <input type=submit name=salir value=Salir></input><br>
             <label for="monto">Monto: </label>
             <input type="number" name="monto">
             <label for="numeroCuenta">Número de Cuenta: </label>
@@ -56,7 +60,11 @@
             header("Location: http://localhost/login_registro/login.php"); 
         }
     }
-    
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
+    }
     ?> 
     </body>
 </html>

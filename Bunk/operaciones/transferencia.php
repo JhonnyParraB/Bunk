@@ -1,10 +1,16 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'User') {
+        header('Location: ../login_registro/login.php');
+    }
+?>
 <!DOCTYPE HTML>
 <html>
 
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -15,7 +21,7 @@
     include_once dirname(__FILE__) . '/../utils/utils.php';
 
     //ESTO DEBERIA EXTRAERSE DE LA SESIÓN
-    $cliente_id = 1;
+    $cliente_id = $_SESSION['Persona'];
 
 
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
@@ -31,6 +37,7 @@
 
     $formularioTransferencia = "";
     $formularioTransferencia .= '<form action="transferencia.php" method="post">';
+    $formularioTransferencia .= '<input type=submit name=salir value=Salir></input><br>';
     $formularioTransferencia .= crearSelect('Cuenta de ahorro de origen', 'cuenta_ahorro', $cuentas_ahorro) . '</br>';
     $tipo_destino = array(
         'cuenta_ahorro' => 'Cuenta de ahorros',
@@ -144,6 +151,11 @@
                 }
             }
         }
+    }
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
     }
 
     ?>
