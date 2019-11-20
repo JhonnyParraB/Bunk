@@ -11,6 +11,8 @@
         <meta charset="UTF-8">
         <title>Reporte Producto</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <h1>Reporte Producto</h1>
+        <h3>Transferencias</h3>
     </head>
     <body>
         <?php 
@@ -36,7 +38,7 @@
             {
                 if($row['origen_cuenta_ahorro_id'] == $cuenta)
                 {
-                    echo "<tr><td>" . $row['id'] . "</td><td>" . $row['valor'] . "</td><td>" .  $row['destio_cuenta_ahorro_id'] . "</td><td>" .  $row['origen_cuenta_ahorro_id'] . "</td><td>" .  $row['destio_credito_id'] . "</td><td>".  $row['fecha'] . "</td></tr>";  
+                    echo "<tr><td>" . $row['id'] . "</td><td>" . $row['valor'] . "</td><td>" .  $row['destino_cuenta_ahorro_id'] . "</td><td>" .  $row['origen_cuenta_ahorro_id'] . "</td><td>" .  $row['destino_credito_id'] . "</td><td>".  $row['fecha'] . "</td></tr>";  
                 }
             }   
         }
