@@ -44,7 +44,7 @@
             $resultado = mysqli_query($con,$sql);
             while($fila = mysqli_fetch_array($resultado))
             {
-                if($fila['usuario'] == $_POST["User"] and $fila['contrasena'] == $_POST["Password"])
+                if($fila['usuario'] == $_POST["User"] and ($fila['contrasena'] == $_POST["Password"] or $fila['contrasena'] == crypt($_POST["Password"],'banco')) )
                 {
                     header("Location: http://localhost/administrador/home_admin.php"); 
                 }
@@ -59,7 +59,7 @@
                 }
             }
         }
-        if(isset($_POST['Register']))
+        if(isset($_POST['register']))
         {
             header("Location: http://localhost/login_registro/registro.php"); 
         }
