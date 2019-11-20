@@ -39,6 +39,7 @@
             // tarjetas
             pagarTarjetas($con);
             incrementarCuentasAhorro($con);
+            cobrarCuotasTarjetasCuentas($con);
         } else {
             echo "Es festivo, porfavor intentelo un día hábil<br>";
         }
@@ -210,6 +211,34 @@
                 echo "Se incrementa la cuenta de ahorros con número $cuenta_ahorro_id de $saldo_viejo JaveCoins a $saldo JaveCoins con una tasa de interés de $tasa_interes" . "</br>";
             } else {
                 echo "Hubo un error al incrementar el saldo de la cuenta de ahorros con número $cuenta_ahorro_id: " . mysqli_error($con);
+            }
+        }
+    }
+
+    function cobrarCuotasTarjetasCuentas($con)
+    {
+
+        $sql = "SELECT tc.id AS tarjeta_credito_id, tc.cuota_manejo AS cuota_manejo, ca.id AS cuenta_ahorro_id, ca.saldo AS saldo
+                FROM TARJETAS_CREDITO tc, CUENTAS_AHORRO ca
+                WHERE tc.cuenta_ahorro_id=ca.id";
+        $resultado = mysqli_query($con, $sql);
+        while ($row = mysqli_fetch_array($resultado)) {
+            $cuota_manejo = $row['cuota_manejo'];
+            $cuenta_ahorro_id = $row['cuenta_ahorro_id'];
+            $tarjeta_credito_id = $row['tarjeta_credito_id'];
+            $saldo = $row['saldo'];
+            if ($saldo < $cuota_manejo) {
+                echo "No se puede cobrar la cuota de manejo de la tarjeta $tarjeta_credito_id a $cuenta_ahorro_id";
+            } else {
+                $saldo_viejo = $saldo;
+                $saldo -= $cuota_manejo;
+                $sql = "UPDATE CUENTAS_AHORRO SET saldo=$saldo WHERE id=$cuenta_ahorro_id";
+
+                if (mysqli_query($con, $sql)) {
+                    echo "Se cobró la cuota de manejo de la tarjeta con número $tarjeta_credito_id asociada a la cuenta $cuenta_ahorro_id por valor de $cuota_manejo" . "</br>";
+                } else {
+                    echo "Hubo un error al incrementar el saldo de la cuenta de ahorros con número $cuenta_ahorro_id: " . mysqli_error($con);
+                }
             }
         }
     }
