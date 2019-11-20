@@ -70,23 +70,25 @@
             $email_visitante =  $roww['email'];
 
             $interes = getInteres($con, $fila['banco_id']);
-            if ($fila['fecha_pagado'] < $fila['fecha_pago']) {
-                $datos .= "<tr><td>" . $fila['id'] . "</td><td>0</td><td>Pagado</td><tr>";
-            } else if ($fila['fecha_pagado'] < $fecha) {
-                $your_date = strtotime($fila['fecha_pagado']);
-                $datediff = $fecha1 - $your_date;
-                $cobro = round($datediff / (60 * 60 * 24)) * $interes;
-                $cobro *= $fila['valor'];
-                
-                $sql = "UPDATE creditos 
-                                SET valor=" . $fila['valor'] + $cobro . "
-                                WHERE id =" . $fila['id'];
-                if (!mysqli_query($con, $sql)) {
-                    echo "Error: " . mysqli_error($con) . "<br>";
-                }
-                $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $cobro . "</td><td>Pagado, intereses por los días de mora</td><tr>";
-            } else {
-                
+            if($fila['fecha_pagado']!=null){
+                if ($fila['fecha_pagado'] < $fila['fecha_pago']) {
+                    $datos .= "<tr><td>" . $fila['id'] . "</td><td>0</td><td>Pagado</td><tr>";
+                } else if ($fila['fecha_pagado'] < $fecha) {
+                    $your_date = strtotime($fila['fecha_pagado']);
+                    $datediff = $fecha1 - $your_date;
+                    $cobro = round($datediff / (60 * 60 * 24)) * $interes;
+                    $cobro *= $fila['valor'];
+                    
+                    $sql = "UPDATE creditos 
+                                    SET valor=" . $fila['valor'] + $cobro . "
+                                    WHERE id =" . $fila['id'];
+                    if (!mysqli_query($con, $sql)) {
+                        echo "Error: " . mysqli_error($con) . "<br>";
+                    }
+                    $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $cobro . "</td><td>Pagado, intereses por los días de mora</td><tr>";
+                } 
+            }else {
+                    
                 $to = $email_visitante;
                 $msg = "Usted se encuentra en mora, hay créditos que vencieron su fecha límite de pago.";
                 $name = 'Visitante';
@@ -95,15 +97,16 @@
                 sendemail($to, $name, $last, $subject, $msg);
 
                 $cobro = 30 * $interes * $fila['valor'];
-                
+                $total = $fila['valor'] + $cobro; 
                 $sql = "UPDATE creditos 
-                                SET valor=" . $fila['valor'] + $cobro . "
-                                WHERE id =" . $fila['id'];
+                            SET valor=$total
+                            WHERE id =" . $fila['id'];
                 if (!mysqli_query($con, $sql)) {
                     echo "Error: " . mysqli_error($con) . "<br>";
                 }
                 $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $cobro . "</td><td>No pagado, intereses por un mes de mora</td><tr>";
             }
+            
         }
         return $datos;
     }
@@ -121,23 +124,22 @@
         while ($fila = mysqli_fetch_array($resultado)) {
             $interes = getInteres($con, $fila['banco_id']);
             $valor = $fila['valor'];
-            
-            $sql = "SELECT * FROM CUENTAS_AHORRO WHERE cliente_id=" . $fila['cliente_id'];
+            $valor1 = $valor;
+            $sql = "SELECT * FROM CUENTAS_AHORRO WHERE cliente_id=" . $fila['cliente_id']." ORDER BY saldo DESC";
             $resultado1 = mysqli_query($con, $sql);
-            $pagos = array();
             $cant = 0;
             while ($row = mysqli_fetch_array($resultado1)) {
                 if ($valor < $row['saldo']) {
-                    
                     $sql = "UPDATE creditos 
-                                    SET valor=0,
-                                        fecha_pagado='$fecha',
-                                        pagado = 1
-                                    WHERE id =" . $fila['id'];
+                            SET valor=0,
+                                fecha_pagado='$fecha',
+                                pagado = 1
+                            WHERE id =" . $fila['id'];
                     if (!mysqli_query($con, $sql)) {
                         echo "Error: " . mysqli_error($con) . "<br>";
                     }
                     $valor = 0;
+                    $cant++;
                     break;
                 } else {
                     $valor -= $row['saldo'];
@@ -146,6 +148,22 @@
             }
             if ($valor == 0) {
                 //cobrar a cuentas mismo sql pero miras que solo hagas cant+1
+                $sql = "SELECT * FROM CUENTAS_AHORRO WHERE cliente_id=" . $fila['cliente_id']." ORDER BY saldo DESC";
+                $resultado2 = mysqli_query($con, $sql);
+                while ($row1 = mysqli_fetch_array($resultado2)) {
+                    if($cant>0){
+                        $restante = $row1['saldo'] - $valor1;
+                        $sql = "UPDATE CUENTAS_AHORRO 
+                                SET saldo=$restante
+                                WHERE id =" . $row1['id'];
+                        if (!mysqli_query($con, $sql)) {
+                            echo "Error: " . mysqli_error($con) . "<br>";
+                        }
+                        $cant--;
+                    }else{
+                    break;
+                    }
+                }
                 $datos .= "<tr><td>" . $fila['id'] . "</td><td>" . $valor . "</td><td>Pagado</td><tr>";
             } else {
                 $datos .= "<tr><td>" . $fila['id'] . "</td><td>0</td><td>Saldo insuficiente</td><tr>";
