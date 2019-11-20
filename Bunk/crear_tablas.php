@@ -64,6 +64,7 @@
                     `fecha_solicitud` DATETIME NULL,
                     `banco_id` INT NOT NULL,
                     `mensaje` VARCHAR(300) NULL,
+                    `fecha_pagado` DATE NULL,
                     PRIMARY KEY (`id`),
                     INDEX `fk_CREDITOS_VISITANTES1_idx` (`cliente_id` ASC) ,
                     INDEX `fk_CREDITOS_CLIENTES1_idx` (`visitante_id` ASC) ,
@@ -194,7 +195,41 @@
             CREATE TABLE IF NOT EXISTS `Bunk`.`DIAS_FESTIVOS` (
                 `FECHA` DATE NOT NULL COMMENT 'Solo hay que comparar los días y los meses (se toman solo las fechas especiales de 2019)',
                 PRIMARY KEY (`FECHA`),
-                UNIQUE INDEX `FECHA_UNIQUE` (`FECHA` ASC)  );  
+                UNIQUE INDEX `FECHA_UNIQUE` (`FECHA` ASC)  ); 
+                
+            CREATE TABLE IF NOT EXISTS `Bunk`.`Consignaciones` (
+                `id` INT NOT NULL AUTO_INCREMENT,
+                `monto` DECIMAL(12,2) NOT NULL,
+                `cedula` INT NOT NULL,
+                `fecha` DATETIME NOT NULL,
+                `destino_cuenta_ahorro_id` INT NULL,
+                `destino_credito_id` INT NULL,
+                PRIMARY KEY (`id`),
+                INDEX `fk_Consignaciones_CUENTAS_AHORRO1_idx` (`destino_cuenta_ahorro_id` ASC) ,
+                INDEX `fk_Consignaciones_CREDITOS1_idx` (`destino_credito_id` ASC) ,
+                CONSTRAINT `fk_Consignaciones_CUENTAS_AHORRO1`
+                    FOREIGN KEY (`destino_cuenta_ahorro_id`)
+                    REFERENCES `Bunk`.`CUENTAS_AHORRO` (`id`)
+                    ON DELETE NO ACTION
+                    ON UPDATE NO ACTION,
+                CONSTRAINT `fk_Consignaciones_CREDITOS1`
+                    FOREIGN KEY (`destino_credito_id`)
+                    REFERENCES `Bunk`.`CREDITOS` (`id`)
+                    ON DELETE NO ACTION
+                    ON UPDATE NO ACTION);
+                    
+            CREATE TABLE IF NOT EXISTS `Bunk`.`RETIROS` (
+                `id` INT NOT NULL AUTO_INCREMENT,
+                `monto` DECIMAL(12,2) NOT NULL,
+                `fecha` DATETIME NOT NULL,
+                `cuenta_ahorro_id` INT NOT NULL,
+                PRIMARY KEY (`id`),
+                INDEX `fk_RETIROS_CUENTAS_AHORRO1_idx` (`cuenta_ahorro_id` ASC) ,
+                CONSTRAINT `fk_RETIROS_CUENTAS_AHORRO1`
+                    FOREIGN KEY (`cuenta_ahorro_id`)
+                    REFERENCES `Bunk`.`CUENTAS_AHORRO` (`id`)
+                    ON DELETE NO ACTION
+                    ON UPDATE NO ACTION);
   
             ";
     if(mysqli_multi_query($con,$sql)){
