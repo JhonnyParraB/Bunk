@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'Admin') {
+        header('Location: ../login_registro/login.php');
+    }
+?>
 <!DOCTYPE HTML>
 <html>
 
@@ -10,6 +16,7 @@
 <body>
     <h1>Fin de mes</h1>
     <form method="POST">
+        <input type=submit name=salir value=Salir></input>
         <input type=submit name=fin value='Fin de mes' />
     </form>
     <?php
@@ -242,7 +249,11 @@
             }
         }
     }
-
+    if(isset($_POST['salir'])){
+        $_SESSION = array();
+        session_destroy();
+        header('Location: ../index.php');
+    }
 
     ?>
 </body>
