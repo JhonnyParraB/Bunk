@@ -1,7 +1,7 @@
 <?php
     session_start();
     if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'Admin') {
-        header('Location: ../login_registro/login.php');
+        header('Location: ../../login_registro/login.php');
     }
 ?>
 <!DOCTYPE html>
@@ -56,7 +56,7 @@
             if(isset($_POST['salir'])){
                 $_SESSION = array();
                 session_destroy();
-                header('Location: ../index.php');
+                header('Location: ../../index.php');
             }
         ?>
     </body>
