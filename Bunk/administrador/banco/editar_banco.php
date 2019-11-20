@@ -1,5 +1,8 @@
 <?php
     session_start();
+    if (!isset($_SESSION['Rol']) && $_SESSION['Rol'] == 'Admin') {
+        header('Location: login.php');
+    }
 ?>
 <!DOCTYPE html>
 <html>

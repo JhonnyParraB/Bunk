@@ -1,5 +1,8 @@
 <?php
     session_start();
+    if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] != 'Admin') {
+        header('Location: ../login_registro/login.php');
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,7 +13,7 @@
     </head>
     <body>
         <form method="POST">
-        <input type=submit name=salir value=Salir class='salirBtn'/>
+            <input type=submit name=salir value=Salir class='salirBtn'/>
         <h2>Editar Cliente</h2>
         <?php
             include_once '../../config.php';
