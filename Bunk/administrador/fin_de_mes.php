@@ -91,7 +91,7 @@
                 $msg = "Usted se encuentra en mora, hay créditos que vencieron su fecha límite de pago.";
                 $name = 'Visitante';
                 $last = 'Visitante';
-                $subject = 'Bunk: Usted no ha pagado su crédito';
+                $subject = 'Bunk: La fecha de pago de su crédito ha vencido';
                 sendemail($to, $name, $last, $subject, $msg);
 
                 $cobro = 30 * $interes * $fila['valor'];
@@ -207,9 +207,7 @@
             } else {
                 echo "No hay suficientes fondos en la cuenta de ahorros $cuenta_ahorro_id, se enviará un correo al cliente." . "</br>";
                 $to = $email;
-                $msg = "Usted no dispone de los fondos suficientes en la cuenta de ahorros $cuenta_ahorro_id, 
-                        para pagar el valor de $valorAPagar que corresponde a la compra con id $compra_id realizada con la
-                        tarjeta de crédito con el número $tarjeta_credito_id.";
+                $msg = "Usted no dispone de los fondos suficientes en la cuenta de ahorros con número $cuenta_ahorro_id, para pagar el valor de $valorAPagar JaveCoins que corresponde a la compra con id $compra_id realizada con la tarjeta de crédito con el número $tarjeta_credito_id.";
                 $name = $nombre;
                 $last = $apellido;
                 $subject = 'Bunk: Incapacidad para pagar la compra asociada a una tarjeta de crédito';
