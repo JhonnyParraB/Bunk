@@ -25,6 +25,7 @@
             <li><a href="../productos/solicitar_credito.php">Solicitar un Crédito</a></li>
             <li><a href="../productos/abrir_cuenta_ahorros.php">Abrir una cuenta de ahorros</a></li>
             <li><a href="../productos/solicitar_tarjeta_credito.php">Solicitar tarjeta de crédito</a></li>
+            <li><a href="../cliente/Reporte_productos.php">Listar Transferencias</a></li>
         </ul>
         <h3>Operaciones</h3>
         <ul>
