@@ -6,12 +6,13 @@
 
 <!-- Navigation -->
 <nav class="Menu">
-  <a >Bunk</a>
-  <a href='http://localhost/Bunk/Bunk/Usuarios/Visitantes.php' >Visitantes</a>
-  <a href='http://localhost/Bunk/Bunk/Prductos.php'>Productos</a>
-  <a href='http://localhost/Bunk/Bunk/cliente' >Cliente</a>
-  <input type="submit" value="Iniciar Sesión" onclick="location.href='http://localhost/login_registro/login.php' ">
-  <input type="submit" value="Registrarse" onclick="location.href='http://localhost/login_registro/registro.php' ">
+    <h1>Bunk</h1>
+  <ul>
+    <li><a href='/productos/solicitar_credito.php' >Solicitar Crédito</a></li>
+    <li><a href='/operaciones/consignacion.php'>Consignar</a></li>
+  </ul>
+  <input type="submit" value="Iniciar Sesión" onclick="location.href='/login_registro/login.php' ">
+  <input type="submit" value="Registrarse" onclick="location.href='/login_registro/registro.php' ">
 </nav>
 
 </body>
